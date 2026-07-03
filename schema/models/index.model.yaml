@@ -24,7 +24,6 @@ config:
       - graphql
       - grpc
       - proto
-      - openapi
 
 # Reuse sapiens for user identity (actors) — logical refs, no DB constraint.
 external_imports:
