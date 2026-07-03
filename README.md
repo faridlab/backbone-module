@@ -140,22 +140,24 @@ backbone-module/
 ## Getting started
 
 1. **Copy** this directory to wherever your new module should live.
-2. **Fix dependency paths** in `Cargo.toml` — the `backbone-*` crates are
-   path dependencies and must point at your actual checkout.
+2. **Name your crate** in `Cargo.toml` — set `[package].name`. The `backbone-*`
+   crates are **git dependencies** pinned to `branch = "main"`, so the skeleton
+   builds anywhere on disk with no path fix-up. For a release, pin them to a
+   tag or commit (`tag = "vX.Y.Z"` or `rev = "<sha>"`) for a reproducible build.
 3. **Rename** `example` to your entity name throughout:
    - `schema/models/example.model.yaml` → `<your_entity>.model.yaml`
    - Inside the YAML, change `Example`, `examples`, `ExampleStatus`
    - The matching `src/` files and `migrations/*_example_*.sql`
-4. **Regenerate** with `backbone-schema`:
+4. **Regenerate** with `metaphor`:
 
    ```bash
-   backbone-schema schema generate <module_name> --target all --force
+   metaphor schema schema generate <module_name> --target all --force
    ```
 
 5. **Run migrations**:
 
    ```bash
-   DATABASE_URL="postgresql://..." backbone migration run --module <module_name>
+   DATABASE_URL="postgresql://..." metaphor migration run
    ```
 
 ## Custom code (regeneration safety)
