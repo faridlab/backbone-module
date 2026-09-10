@@ -209,7 +209,7 @@ dependencies = [
 [[package]]
 name = "backbone-auth"
 version = "2.0.0"
-source = "git+https://github.com/faridlab/backbone-framework?branch=main#10887b5986f528952927a38a156c221d4cbfffa4"
+source = "git+https://github.com/faridlab/backbone-framework?tag=v2.7.0#1654f880319405f0268ecb978d33942c9667a42f"
 dependencies = [
  "anyhow",
  "argon2",
@@ -233,12 +233,13 @@ dependencies = [
 [[package]]
 name = "backbone-core"
 version = "2.0.0"
-source = "git+https://github.com/faridlab/backbone-framework?branch=main#10887b5986f528952927a38a156c221d4cbfffa4"
+source = "git+https://github.com/faridlab/backbone-framework?tag=v2.7.0#1654f880319405f0268ecb978d33942c9667a42f"
 dependencies = [
  "anyhow",
  "async-trait",
  "axum",
  "backbone-messaging",
+ "backbone-orm",
  "chrono",
  "prost",
  "regex",
@@ -259,7 +260,7 @@ dependencies = [
 [[package]]
 name = "backbone-messaging"
 version = "2.0.0"
-source = "git+https://github.com/faridlab/backbone-framework?branch=main#10887b5986f528952927a38a156c221d4cbfffa4"
+source = "git+https://github.com/faridlab/backbone-framework?tag=v2.7.0#1654f880319405f0268ecb978d33942c9667a42f"
 dependencies = [
  "async-trait",
  "chrono",
@@ -273,7 +274,7 @@ dependencies = [
 
 [[package]]
 name = "backbone-module-skeleton"
-version = "0.1.1"
+version = "0.1.4"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -313,7 +314,7 @@ dependencies = [
 [[package]]
 name = "backbone-orm"
 version = "2.0.0"
-source = "git+https://github.com/faridlab/backbone-framework?branch=main#10887b5986f528952927a38a156c221d4cbfffa4"
+source = "git+https://github.com/faridlab/backbone-framework?tag=v2.7.0#1654f880319405f0268ecb978d33942c9667a42f"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -325,6 +326,7 @@ dependencies = [
  "sqlx",
  "thiserror 1.0.69",
  "tokio",
+ "tracing",
  "uuid",
 ]
 
