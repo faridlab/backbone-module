@@ -1,0 +1,73 @@
+name: Publish
+
+# Tag-driven release to crates.io.
+#
+# Push a `v<version>` tag on a commit that is already on main. The workflow
+# refuses a tag that disagrees with the version in Cargo.toml or that points
+# off main, builds and tests the library, checks that the package carries the
+# directories consumers read, and then publishes. A published version is
+# permanent (it can be yanked, never replaced), which is why every check runs
+# before the publish step.
+#
+# Needs the CARGO_REGISTRY_TOKEN repository secret (a crates.io API token).
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry and target
+        uses: Swatinem/rust-cache@v2
+
+      - name: Verify the tag matches the crate version
+        run: |
+          version="$(cargo metadata --format-version 1 --no-deps \
+            | python3 -c 'import json,sys; print(json.load(sys.stdin)["packages"][0]["version"])')"
+          if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "Tag '$GITHUB_REF_NAME' disagrees with version '$version' in Cargo.toml." >&2
+            echo "Bump the version in Cargo.toml or retag." >&2
+            exit 1
+          fi
+
+      - name: Verify the tagged commit is on main
+        run: |
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Tag '$GITHUB_REF_NAME' points at $GITHUB_SHA, which is not on main." >&2
+            echo "Push the commit to main first, then tag it." >&2
+            exit 1
+          fi
+
+      - name: Build and test the library
+        run: |
+          cargo build --lib
+          cargo test --lib
+
+      - name: Verify the package carries migrations and schema
+        run: |
+          cargo package --list > "$RUNNER_TEMP/package-files.txt"
+          for dir in migrations schema; do
+            if [ -d "$dir" ] && ! grep -q "^$dir/" "$RUNNER_TEMP/package-files.txt"; then
+              echo "$dir/ exists in the repository but is missing from the package." >&2
+              echo "Consumers read it from the published crate; check include/exclude in Cargo.toml." >&2
+              exit 1
+            fi
+          done
+
+      - name: Publish to crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish

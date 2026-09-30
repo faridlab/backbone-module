@@ -177,3 +177,17 @@ gRPC, GraphQL, CLI, triggers, validators, workflows, state machines, ...).
 Add them back from the full framework docs as you need them. The directory
 structure mirrors what the generator expects, so adding a new layer is as
 simple as creating the corresponding `mod.rs` and pointing `lib.rs` at it.
+## Releasing
+
+Modules are published to crates.io and consumed by semver version, never by
+git tag. To release, bump `version` in `Cargo.toml` (below 1.0, a fix or an
+additive change is a patch bump and a breaking change is a minor bump), push
+the commit to `main`, then push a `v<version>` tag on it. The
+[publish workflow](.github/workflows/publish.yml) checks the tag, builds and
+tests, checks the package still carries `migrations/` and `schema/`, and
+publishes. It needs the `CARGO_REGISTRY_TOKEN` repository secret.
+
+## License
+
+Licensed under either of [Apache License, Version 2.0](LICENSE-APACHE) or
+[MIT license](LICENSE-MIT), at your option.

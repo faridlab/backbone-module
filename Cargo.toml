@@ -4,24 +4,33 @@ version = "0.1.18"
 edition = "2021"
 description = "Minimal Backbone Framework module skeleton"
 license = "MIT OR Apache-2.0"
+# `metaphor module create` rewrites this to the new module's own repository.
+repository = "https://github.com/faridlab/backbone-module"
+# The skeleton itself is a template and is never published. `metaphor module
+# create` drops this line, so every module it creates is publishable.
+publish = false
+# Modules are published to crates.io. Keep agent tooling and local analysis out of
+# the package; migrations/ and schema/ must stay in, since consumers read them.
+exclude = [".claude/", ".github/", "graphify-out/"]
 
 [lib]
 path = "src/lib.rs"
 
 [dependencies]
 # -----------------------------------------------------------------------------
-# Backbone Framework crates
+# Backbone Framework crates, from crates.io
 #
-# Pulled directly from the public framework repository so this skeleton works
-# anywhere on disk without path fix-up. For reproducible builds, pin to a
-# specific tag or commit by replacing `branch = "main"` with `tag = "vX.Y.Z"`
-# or `rev = "<commit-sha>"`. Cargo dedupes the git fetch — the repo is only
-# cloned once even though four crates reference it.
+# A requirement like "2.7.35" accepts any compatible later framework release,
+# and `cargo update` moves the lockfile onto it, so a framework release never
+# needs an edit here. Every framework crate is released at the same version.
+# To build against an unreleased framework change, add an untracked
+# .cargo/config.toml with a [patch.crates-io] entry pointing at a local
+# checkout; never commit a [patch] section.
 # -----------------------------------------------------------------------------
-backbone-core = { git = "https://github.com/faridlab/backbone-framework", tag = "v2.7.27", features = ["postgres"] }
-backbone-orm = { git = "https://github.com/faridlab/backbone-framework", tag = "v2.7.27" }
-backbone-auth = { git = "https://github.com/faridlab/backbone-framework", tag = "v2.7.27" }
-backbone-messaging = { git = "https://github.com/faridlab/backbone-framework", tag = "v2.7.27" }
+backbone-core = { version = "2.7.35", features = ["postgres"] }
+backbone-orm = "2.7.35"
+backbone-auth = "2.7.35"
+backbone-messaging = "2.7.35"
 
 # Core async runtime and serialization
 tokio = { version = "1.0", features = ["full"] }
