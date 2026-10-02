@@ -181,11 +181,13 @@ simple as creating the corresponding `mod.rs` and pointing `lib.rs` at it.
 
 Modules are published to crates.io and consumed by semver version, never by
 git tag. To release, bump `version` in `Cargo.toml` (below 1.0, a fix or an
-additive change is a patch bump and a breaking change is a minor bump), push
-the commit to `main`, then push a `v<version>` tag on it. The
-[publish workflow](.github/workflows/publish.yml) checks the tag, builds and
-tests, checks the package still carries `migrations/` and `schema/`, and
-publishes. It needs the `CARGO_REGISTRY_TOKEN` repository secret.
+additive change is a patch bump and a breaking change is a minor bump) and merge
+it to `main`. The [release workflow](.github/workflows/crate-release.yml) calls the
+shared backbone crate release workflow: every pull request is built, tested,
+audited (the package must still carry `migrations/` and `schema/`, and no
+secrets or dotfiles) and dry-run published; a push to `main` whose version is
+not on crates.io yet publishes it and then pushes the `v<version>` tag. Never push
+a release tag by hand. It needs the `CARGO_REGISTRY_TOKEN` repository secret.
 
 ## License
 
