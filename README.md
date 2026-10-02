@@ -7,7 +7,7 @@ so you can rename it to your own domain concept and start generating.
 ## What you get
 
 - A single schema model at `schema/models/example.model.yaml`
-- Two migrations (`001_create_enums.up.sql`, `002_create_example_table.up.sql`)
+- No migrations yet: `metaphor schema generate` writes them from the schema
 - A complete DDD layer cake for `Example`:
   - Domain entity + repository trait
   - Application service (type alias over `GenericCrudService`)
@@ -21,8 +21,8 @@ so you can rename it to your own domain concept and start generating.
 ## Directory layout
 
 The tree below shows the **complete canonical Backbone module structure**.
-This skeleton ships only the minimum viable subset (one `Example` entity,
-two migrations, the core DDD layers); every other folder is documented here
+This skeleton ships only the minimum viable subset (one `Example` entity and
+the core DDD layers); every other folder is documented here
 so you know where to add the optional layers when you need them.
 
 ```
@@ -35,7 +35,8 @@ backbone-module/
 │   ├── workflows/                       # Business workflow definitions
 │   └── openapi/                         # OpenAPI / Swagger specifications
 │
-├── migrations/                          # DATABASE MIGRATIONS (PostgreSQL)
+├── migrations/                          # DATABASE MIGRATIONS (PostgreSQL), written by
+│   │                                    #   `metaphor schema generate`; none ship here
 │   ├── 001_create_enums.up.sql          # Enum types (e.g. example_status)
 │   ├── 001_create_enums.down.sql
 │   ├── 002_create_example_table.up.sql  # CREATE TABLE for the example entity
@@ -130,8 +131,8 @@ backbone-module/
 └── README.md                            # This file
 ```
 
-> **What ships in this skeleton:** `schema/models/example.model.yaml`, the two
-> example migrations, `Cargo.toml`, `README.md`, `buf.yaml`, `config/application.yml`,
+> **What ships in this skeleton:** `schema/models/example.model.yaml`,
+> `Cargo.toml`, `README.md`, `buf.yaml`, `config/application.yml`,
 > `tests/integration_tests.rs`, and the `src/` layers `domain/{entity,repositories}`,
 > `application/{dto,service}`, `infrastructure/persistence`, `presentation/http`,
 > `routes`, `seeders`, plus `lib.rs` and `module.rs`.
@@ -139,22 +140,23 @@ backbone-module/
 
 ## Getting started
 
-1. **Copy** this directory to wherever your new module should live.
-2. **Name your crate** in `Cargo.toml` — set `[package].name`. The `backbone-*`
-   crates are **git dependencies** pinned to `branch = "main"`, so the skeleton
-   builds anywhere on disk with no path fix-up. For a release, pin them to a
-   tag or commit (`tag = "vX.Y.Z"` or `rev = "<sha>"`) for a reproducible build.
-3. **Rename** `example` to your entity name throughout:
+1. **Create** the module: `metaphor module create <name>`. It is published as
+   `backbone-<name>` (a bare name gets the prefix), so the crate, its directory and
+   its repository are all `backbone-<name>`. The command also starts it at
+   `0.1.0`, points `repository` at `faridlab/backbone-<name>`, and makes it
+   publishable. The `backbone-*` dependencies come from crates.io by semver
+   requirement, the same as every other module.
+2. **Rename** `example` to your entity name throughout:
    - `schema/models/example.model.yaml` → `<your_entity>.model.yaml`
    - Inside the YAML, change `Example`, `examples`, `ExampleStatus`
-   - The matching `src/` files and `migrations/*_example_*.sql`
-4. **Regenerate** with `metaphor`:
+   - The matching `src/` files
+3. **Generate** the code and the migrations from the schema:
 
    ```bash
-   metaphor schema schema generate <module_name> --target all --force
+   metaphor schema generate backbone-<name> --target all --force
    ```
 
-5. **Run migrations**:
+4. **Run migrations**:
 
    ```bash
    DATABASE_URL="postgresql://..." metaphor migration run
