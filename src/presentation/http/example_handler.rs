@@ -32,6 +32,7 @@ impl From<ServiceError> for ExampleError {
         match err {
             ServiceError::NotFound => Self::NotFound(err.to_string()),
             ServiceError::Validation(ref msg) => Self::Validation(msg.clone()),
+            ServiceError::Violations(_) => Self::Validation(err.to_string()),
             ServiceError::AlreadyExists(ref msg) => Self::Validation(msg.clone()),
             ServiceError::Repository(ref e) => Self::Database(e.to_string()),
             ServiceError::Internal(ref msg) => Self::Internal(msg.clone()),

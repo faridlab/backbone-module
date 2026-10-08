@@ -1,6 +1,6 @@
 [package]
 name = "backbone-module-skeleton"
-version = "0.1.18"
+version = "0.2.0"
 edition = "2021"
 description = "Minimal Backbone Framework module skeleton"
 license = "MIT OR Apache-2.0"
@@ -27,10 +27,10 @@ path = "src/lib.rs"
 # .cargo/config.toml with a [patch.crates-io] entry pointing at a local
 # checkout; never commit a [patch] section.
 # -----------------------------------------------------------------------------
-backbone-core = { version = "2.7.35", features = ["postgres"] }
-backbone-orm = "2.7.35"
-backbone-auth = "2.7.35"
-backbone-messaging = "2.7.35"
+backbone-core = { version = "3.0.0", features = ["postgres"] }
+backbone-orm = "3.0.0"
+backbone-auth = "3.0.0"
+backbone-messaging = "3.0.0"
 
 # Core async runtime and serialization
 tokio = { version = "1.0", features = ["full"] }
