@@ -23,8 +23,6 @@ pub mod infrastructure;
 pub mod application;
 pub mod presentation;
 pub mod exports;
-// <<< CUSTOM MODULES
-// END CUSTOM
 
 // The module's extension (hand-written; ADR-0031).
 #[path = "lib.ext.rs"]
@@ -65,8 +63,6 @@ pub struct MODULEModule {
     pub(crate) example_service: Arc<ExampleService>,
     /// The module's extension state (`lib.ext.rs`); its fields read through `Deref`.
     pub(crate) ext: ModuleExt,
-    // <<< CUSTOM FIELDS
-    // END CUSTOM
 }
 
 impl std::ops::Deref for MODULEModule {
@@ -76,11 +72,18 @@ impl std::ops::Deref for MODULEModule {
     }
 }
 
+impl std::ops::DerefMut for MODULEModule {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.ext
+    }
+}
+
 /// What the extension's `build` hook receives from the generated build (ADR-0031).
 #[allow(dead_code)]
 pub(crate) struct ModuleParts<'a> {
     pub(crate) db_pool: &'a PgPool,
     pub(crate) example_service: &'a Arc<ExampleService>,
+    pub(crate) example_repository: &'a Arc<ExampleRepository>,
 }
 
 impl MODULEModule {
@@ -127,8 +130,6 @@ impl MODULEModule {
             .merge(create_example_read_routes(self.example_service.clone()))
     }
 
-    // <<< CUSTOM METHODS
-    // END CUSTOM
 }
 
 /// Builder for MODULEModule
@@ -136,8 +137,6 @@ pub struct MODULEModuleBuilder {
     db_pool: Option<PgPool>,
     /// The builder's extension state (`lib.ext.rs`); its fields read through `Deref`.
     ext: ModuleBuilderExt,
-    // <<< CUSTOM BUILDER FIELDS
-    // END CUSTOM
 }
 
 impl std::ops::Deref for MODULEModuleBuilder {
@@ -159,8 +158,6 @@ impl MODULEModuleBuilder {
         Self {
             db_pool: None,
             ext: Default::default(),
-            // <<< CUSTOM BUILDER DEFAULTS
-            // END CUSTOM
         }
     }
 
@@ -170,8 +167,6 @@ impl MODULEModuleBuilder {
         self
     }
 
-    // <<< CUSTOM - custom builder methods
-    // END CUSTOM
 
     /// Build the module with configured dependencies
     pub fn build(self) -> anyhow::Result<MODULEModule> {
@@ -182,20 +177,17 @@ impl MODULEModuleBuilder {
         let example_repository = Arc::new(ExampleRepository::new(db_pool.clone()));
         let example_service = Arc::new(ExampleService::with_repository(example_repository.clone()));
 
-        // <<< CUSTOM
-        // END CUSTOM
 
         // The extension builds its own state from what the generated build made.
         let ext = self.ext.build(&ModuleParts {
             db_pool: &db_pool,
             example_service: &example_service,
+            example_repository: &example_repository,
         })?;
 
         Ok(MODULEModule {
             example_service,
             ext,
-            // <<< CUSTOM
-            // END CUSTOM
         })
     }
 }
@@ -205,6 +197,3 @@ impl Default for MODULEModuleBuilder {
         Self::new()
     }
 }
-
-// Hand-written modules in this directory (user_owned; ADR-0031).
-pub mod module;

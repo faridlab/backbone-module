@@ -17,9 +17,5 @@ pub fn example_validator() -> ExampleValidator {
     EntityValidator::new()
         .rule(RequiredString::new("name", |e: &Example| &e.name))
         .rule(OptionalNotBlank::new("description", |e: &Example| e.description.as_deref()))
-    // <<< CUSTOM RULES
-    // END CUSTOM RULES
 }
 
-// <<< CUSTOM
-// END CUSTOM

@@ -8,5 +8,3 @@ pub mod example_event_handlers;
 pub use example_events::{ExampleEvent, ExampleEventPublisher, NoopExampleEventPublisher};
 pub use example_event_handlers::ExampleEventHandler;
 
-// <<< CUSTOM
-// END CUSTOM

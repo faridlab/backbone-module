@@ -7,10 +7,6 @@
 
 pub mod example_handler;
 
-// <<< CUSTOM
-// END CUSTOM
 
 // Re-exports
 pub use example_handler::{create_example_routes, create_example_read_routes, create_example_write_routes};
-// <<< CUSTOM
-// END CUSTOM

@@ -163,8 +163,6 @@ impl Example {
         }
     }
 
-    // <<< CUSTOM METHODS START >>>
-    // <<< CUSTOM METHODS END >>>
 }
 
 impl super::Entity for Example {

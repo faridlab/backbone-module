@@ -6,5 +6,3 @@ pub mod example_domain_policy;
 
 pub use example_domain_policy::ExampleDomainPolicy;
 
-// <<< CUSTOM
-// END CUSTOM

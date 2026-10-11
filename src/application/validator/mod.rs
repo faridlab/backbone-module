@@ -9,5 +9,3 @@ pub mod example_validator;
 
 pub use example_validator::{ExampleValidator, example_validator};
 
-// <<< CUSTOM
-// END CUSTOM

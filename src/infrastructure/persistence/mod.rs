@@ -7,8 +7,6 @@
 mod example_repository;
 
 // Custom persistence modules
-// <<< CUSTOM
-// END CUSTOM
 
 // Re-exports
 pub use example_repository::ExampleRepository;
@@ -21,5 +19,3 @@ pub use backbone_orm::repository::{
 };
 
 // Re-export custom persistence types
-// <<< CUSTOM
-// END CUSTOM

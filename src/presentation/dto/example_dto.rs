@@ -242,7 +242,7 @@ impl backbone_core::ApplyUpdateDto<UpdateExampleDto> for Example {
 // Custom DTOs
 // =============================================================================
 
-// <<< CUSTOM DTOs
 // Add custom DTOs specific to Example here.
 // This section will be preserved during regeneration.
 // >>> END CUSTOM DTOs
+
