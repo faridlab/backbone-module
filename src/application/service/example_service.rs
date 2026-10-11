@@ -34,3 +34,8 @@ pub type ExampleService = GenericCrudService<
 
 // <<< CUSTOM
 // END CUSTOM
+
+// This file's extension (hand-written; ADR-0031).
+#[path = "example_service.ext.rs"]
+mod example_service_ext;
+pub use example_service_ext::*;
