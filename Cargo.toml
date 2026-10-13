@@ -27,7 +27,7 @@ path = "src/lib.rs"
 # .cargo/config.toml with a [patch.crates-io] entry pointing at a local
 # checkout; never commit a [patch] section.
 # -----------------------------------------------------------------------------
-backbone-core = { version = "3.0.0", features = ["postgres"] }
+backbone-core = { version = "3.7.0", features = ["postgres"] }
 backbone-orm = "3.0.0"
 backbone-auth = "3.0.0"
 backbone-messaging = "3.0.0"
