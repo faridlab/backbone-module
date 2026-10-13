@@ -11,6 +11,7 @@ pub mod example_service;
 
 
 pub use example_service::ExampleService;
+pub use example_service::ExampleRowRules;
 
 // This directory's extension (hand-written; ADR-0031).
 include!("mod.ext.rs");

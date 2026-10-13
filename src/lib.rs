@@ -175,7 +175,7 @@ impl MODULEModuleBuilder {
 
         // Example service
         let example_repository = Arc::new(ExampleRepository::new(db_pool.clone()));
-        let example_service = Arc::new(ExampleService::with_repository(example_repository.clone()));
+        let example_service = Arc::new(ExampleService::with_repository(example_repository.clone()).with_guard(Arc::new(crate::application::service::ExampleRowRules)));
 
 
         // The extension builds its own state from what the generated build made.
