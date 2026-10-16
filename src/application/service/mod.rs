@@ -13,5 +13,13 @@ pub mod example_service;
 pub use example_service::ExampleService;
 pub use example_service::ExampleRowRules;
 
+/// A `ExampleService` over `repository` with its write guard attached: the way to build it, so its writes are
+/// served only with the rules the schema declares.
+pub fn build_example_service(
+    repository: std::sync::Arc<crate::infrastructure::persistence::ExampleRepository>,
+) -> ExampleService {
+    ExampleService::with_repository(repository).with_guard(std::sync::Arc::new(ExampleRowRules))
+}
+
 // This directory's extension (hand-written; ADR-0031).
 include!("mod.ext.rs");
